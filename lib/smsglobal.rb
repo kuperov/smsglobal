@@ -13,7 +13,7 @@ module SmsGlobal
     end
 
     def send_text(text, to, sender = nil, send_at = nil)
-      from = sender || @options[:from] || raise_error('sender is required')
+      from = sender || @options[:from] || raise('sender is required')
       params = {
         :action => 'sendsms',
         :user => @options[:user],
