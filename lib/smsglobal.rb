@@ -2,6 +2,7 @@ require 'net/http'
 require 'uri'
 
 module SmsGlobal
+  class Exception
   class Sender
     include Net
 
@@ -13,7 +14,7 @@ module SmsGlobal
     end
 
     def send_text(text, to, sender = nil, send_at = nil)
-      from = sender || @options[:from] || raise('sender is required')
+      from = sender || @options[:from] || raise ArgumentError.new('sender is required')
       params = {
         :action => 'sendsms',
         :user => @options[:user],
