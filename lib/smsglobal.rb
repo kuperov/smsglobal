@@ -2,7 +2,6 @@ require 'net/http'
 require 'uri'
 
 module SmsGlobal
-  class Exception
   class Sender
     include Net
 
