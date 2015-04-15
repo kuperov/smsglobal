@@ -9,7 +9,12 @@ describe 'SmsGlobal' do
     end
 
     it "requires :user and :password" do
-      lambda { Sender.new }.should raise_error ArgumentError.new('sender is required')
+      lambda { Sender.new }.should raise_error('missing :user')
+      lambda { Sender.new(user: 'bob') }.should raise_error('missing :password')
+    end
+
+    it 'requires a from' do
+       lambda{@sender.send_text('Lorem Ipsum', '12341324', nil)}.should raise_error('sender is required')
     end
 
     it "sends SMS correctly" do
