@@ -9,6 +9,7 @@ module SmsGlobal
       @options = options
       raise 'missing :user' unless @options[:user]
       raise 'missing :password' unless @options[:password]
+      @options.each {|k,v| @options[k] = v.to_s if v }
       @base = @options[:base] || 'http://www.smsglobal.com/'
     end
 
@@ -27,6 +28,8 @@ module SmsGlobal
         params[:scheduledatetime] = send_at.strftime('%Y-%m-%d %h:%M:%S')
       end
       params[:maxsplit] = @options[:maxsplit] if @options[:maxsplit]
+      params[:userfield] = @options[:userfield] if @options[:userfield]
+      params[:api] = @options[:api] if @options[:api]
 
       resp = get(params)
 
@@ -61,7 +64,7 @@ module SmsGlobal
     def get(params = nil)
       url = URI.join(@base, 'http-api.php')
       if params
-        url.query = params.map { |k,v| "%s=%s" % [URI.encode(k.to_s), URI.encode(v)] }.join("&")
+        url.query = params.map { |k,v| "%s=%s" % [URI.encode(k.to_s), URI.encode(v.to_s)] }.join("&")
       end
       res = HTTP.start(url.host, url.port) do |http|
         http.get(url.request_uri)
