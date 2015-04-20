@@ -30,7 +30,10 @@ module SmsGlobal
       params[:userfield] = @options[:userfield] if @options[:userfield]
       params[:api] = @options[:api] if @options[:api]
 
-      resp = get(params)
+      url = generate_url(params)
+      resp = HTTP.start(url.host, url.port) do |http|
+        http.get(url.request_uri)
+      end
 
       case resp
       when Net::HTTPSuccess
@@ -58,16 +61,13 @@ module SmsGlobal
       end
     end
 
-    private
-    
-    def get(params = nil)
+    def generate_url(params = nil)
       url = URI.join(@base, 'http-api.php')
       if params
         url.query = params.map { |k,v| "%s=%s" % [URI.encode(k.to_s), URI.encode(v.to_s)] }.join("&")
       end
-      res = HTTP.start(url.host, url.port) do |http|
-        http.get(url.request_uri)
-      end
+
+      url
     end
   end
 
