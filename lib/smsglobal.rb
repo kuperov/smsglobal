@@ -64,7 +64,7 @@ module SmsGlobal
     def generate_url(params = nil)
       url = URI.join(@base, 'http-api.php')
       if params
-        url.query = params.map { |k,v| "%s=%s" % [URI.encode(k.to_s), URI.encode(v.to_s)] }.join("&")
+        url.query = params.map { |k,v| "%s=%s" % [CGI.escape(k.to_s), CGI.escape(v.to_s)] }.join("&")
       end
 
       url

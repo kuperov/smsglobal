@@ -14,7 +14,7 @@ describe 'SmsGlobal' do
           :text => "Safe & Secure"
         })
 
-        expect(url.request_uri).to eq "/http-api.php?text=Safe%20%26%20Secure"
+        expect(url.request_uri).to eq "/http-api.php?text=Safe+%26+Secure"
       end
     end
 
