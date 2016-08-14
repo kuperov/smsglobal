@@ -14,7 +14,8 @@ module SmsGlobal
     end
 
     def send_text(text, to, sender = nil, send_at = nil)
-      from = sender || @options[:from] || raise_error('sender is required')
+      from = sender || @options[:from]
+      raise ArgumentError.new('sender is required') unless from
       params = {
         :action => 'sendsms',
         :user => @options[:user],

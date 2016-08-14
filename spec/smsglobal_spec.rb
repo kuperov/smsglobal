@@ -9,7 +9,8 @@ describe 'SmsGlobal' do
     end
 
     it "requires :user and :password" do
-      expect { Sender.new }.to raise_error
+      expect { Sender.new }.to raise_error('missing :user')
+      expect { Sender.new(user: 'bob') }.to raise_error('missing :password')
     end
 
     it "sends SMS correctly" do
@@ -46,9 +47,9 @@ describe 'SmsGlobal' do
       it 'should not fail' do
         stub_sms_ok
         resp = @sender.send_text(1, 12341324, 1234)
-        resp[:status].should == :ok
-        resp[:code].should == 0
-        resp[:message].should == 'Sent queued message ID: 941596d028699601'
+        expect(resp[:status]).to eq :ok
+        expect(resp[:code]).to eq 0
+        expect(resp[:message]).to eq 'Sent queued message ID: 941596d028699601'
       end
     end
   end
