@@ -8,6 +8,16 @@ describe 'SmsGlobal' do
       @sender = Sender.new :user => 'DUMMY', :password => 'DUMMY'
     end
 
+    describe "#generate_url" do
+      it 'escapes malicious input' do
+        url = @sender.generate_url({
+          :text => "Safe & Secure"
+        })
+
+        expect(url.request_uri).to eq "/http-api.php?text=Safe+%26+Secure"
+      end
+    end
+
     it "requires :user and :password" do
       expect { Sender.new }.to raise_error
     end
